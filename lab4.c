@@ -7,6 +7,14 @@ typedef struct tree {
     struct tree *next_left;
     struct tree *next_right;
 } tree;
+void enter_number(char *str,int *n){
+    while(1){
+        gets(str);
+        *n = atoi(str);
+        if(!*n) { puts("enter correct number");}
+        else {break;}
+    }
+}
 tree *create_tree(tree * first_elem)
 {
     char *str;
@@ -20,8 +28,7 @@ tree *create_tree(tree * first_elem)
         return (NULL);
     }
     puts("Enter info in first element");
-    gets(str);
-    first_elem->info = atoi(str);
+    enter_number(str,&first_elem -> info);
     first_elem->number = 1;
     first_elem->next_left = NULL;
     first_elem->next_right = NULL;
@@ -42,10 +49,14 @@ void add_elem(tree * first_elem)
     do {
         puts("Enter info (0 - out)");
         str = (char *) calloc(10, sizeof(char));
-        gets(str);
-        current_number = atoi(str);
-        if (!strcmp(str, "0"))
-            return;
+        while(1){
+			gets(str);
+			if (!strcmp(str, "0")){
+				return;}
+			current_number = atoi(str);
+			if(!current_number) { puts("enter correct number");}
+			else {break;}
+		}
         current1 = first_elem;
         out_cycle = 0;
 
@@ -146,8 +157,7 @@ int main(int argc, char **argv)
     first_elem = create_tree(first_elem);
     add_elem(first_elem);
     puts("Enter level");
-    gets(str);
-    n = atoi(str);
+    enter_number(str,&n);
     printf("number of nod on level %d: %d", n,
            calculate_number_of_nod(first_elem, n));
     return 0;
