@@ -111,19 +111,19 @@ void add_elem(tree * first_elem)
 
 int calculate_number_of_nod(tree * current, int n)
 {
-    static int k = -1, a;
+    static int level = -1, number;
     if (current->next_left == NULL && current->next_right == NULL) {
         return 0;
     }
-    k += 1;
-    if (k == n) {
-        a += 1;
+    level += 1;
+    if (level == n) {
+        number += 1;
     }
     calculate_number_of_nod(current->next_left, n);
     calculate_number_of_nod(current->next_right, n);
-    k -= 1;
-    if (k == -1) {
-        return a;
+    level -= 1;
+    if (level == -1) {
+        return number;
     }
     
     else {
