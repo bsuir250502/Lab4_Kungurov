@@ -3,7 +3,7 @@
 #include <string.h>
 typedef struct tree {
     int info;
-    int number;
+    int number_of_miting;
     struct tree *next_left;
     struct tree *next_right;
 } tree;
@@ -29,10 +29,10 @@ tree *create_tree(tree * first_elem)
     }
     puts("Enter info in first element");
     enter_number(str,&first_elem -> info);
-    first_elem->number = 1;
+    first_elem->number_of_miting = 1;
     first_elem->next_left = NULL;
     first_elem->next_right = NULL;
-    return (first_elem);
+    return first_elem;
 }
 
 void add_elem(tree * first_elem)
@@ -40,7 +40,7 @@ void add_elem(tree * first_elem)
     tree *current1, *current2;
     char *str;
     int current_number;
-    int out_cycle;
+    int out_from_cycle;
     if (!first_elem) {
         puts("No tree");
         return;
@@ -58,12 +58,12 @@ void add_elem(tree * first_elem)
 			else {break;}
 		}
         current1 = first_elem;
-        out_cycle = 0;
+        out_from_cycle = 0;
 
         do {
             if (current_number == current1->info) {
-                current1->number++;
-                out_cycle = 1;
+                current1->number_of_miting++;
+                out_from_cycle = 1;
             }
 
             else {
@@ -73,7 +73,7 @@ void add_elem(tree * first_elem)
                     }
 
                     else {
-                        out_cycle = 1;
+                        out_from_cycle = 1;
                     }
                 }
 
@@ -83,11 +83,11 @@ void add_elem(tree * first_elem)
                     }
 
                     else {
-                        out_cycle = 1;
+                        out_from_cycle = 1;
                     }
                 }
             }
-        } while (out_cycle == 0);
+        } while (out_from_cycle == 0);
         if (current_number != current1->info) {
             if ((current2 = (tree *) malloc(sizeof(tree))) == NULL) {
                 puts("No free memory");
@@ -101,7 +101,7 @@ void add_elem(tree * first_elem)
                 current1->next_right = current2;
             }
             current2->info = current_number;
-            current2->number = 1;
+            current2->number_of_miting = 1;
             current2->next_right = NULL;
             current2->next_left = NULL;
         }
@@ -112,15 +112,20 @@ void add_elem(tree * first_elem)
 int calculate_number_of_nod(tree * current, int n)
 {
     static int level = -1, number;
-    if (current->next_left == NULL && current->next_right == NULL) {
-        return 0;
-    }
     level += 1;
     if (level == n) {
         number += 1;
     }
-    calculate_number_of_nod(current->next_left, n);
-    calculate_number_of_nod(current->next_right, n);
+    if (current->next_left == NULL && current->next_right == NULL) {
+        level -= 1;
+        return 0;
+    }
+    if(current->next_left != NULL){
+        calculate_number_of_nod(current->next_left, n);
+    }
+    if(current->next_right != NULL){
+        calculate_number_of_nod(current->next_right, n);
+    }
     level -= 1;
     if (level == -1) {
         return number;
